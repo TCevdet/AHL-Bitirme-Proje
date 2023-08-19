@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Urun>
+
+<style>
+    /* Ürün kartlarının genel stili */
+    .product-card {
+        color: #A8EB12;
+        width: 280px;
+        height: 550px; /* Tüm kartların aynı yükseklikte olması için sabit yükseklik */
+        margin: 2px;
+    }
+
+    /* Kart içeriği sığdırmak için CSS kuralları */
+    .product-content {
+        height: 100%; /* Kartın içeriğinin kart yüksekliği kadar olmasını sağlar */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* Resimleri belirli boyutlara sığdırmak için CSS kuralları */
+    .product-image {
+        width: 100%;
+        max-height: 230px;
+        object-fit: cover;
+        border: 2px solid #ccc;
+    }
+
+    .product-details {
+        flex-grow: 1; /* İçeriğin dikeyde genişlemesini sağlar */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .product-title {
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: center;
+        padding: 5px;
+        color: #FF9B00;
+        margin-bottom: 10px; /* Başlık arasında boşluk bırakır */
+    }
+
+    .product-brand {
+        font-size: 1rem;
+        text-align: center;
+        margin-top: 5px;
+        color: #777;
+    }
+
+    .product-price {
+        font-size: 0,5rem;
+        color: #c00;
+        text-align: center;
+        margin-top: auto;
+    }
+
+    .buy-button {
+        width: 100%;
+        margin-top: auto; /* Bu özellik, butonları en altta hizalar */
+    }
+</style>
+
+<div class="row pb-3">
+    @foreach (var urun in Model)
+    {
+        <div class="col-lg-3 col-sm-6 product-card">
+            <div class="card p-3 shadow border-top border-5 rounded product-content">
+                <img src="@urun.ResimUrl" class="product-image rounded">
+                <div class="card-body product-details">
+                    <div>
+                        <p class="product-title">@urun.UrunAdi</p>
+                        <p class="product-brand">@urun.UrunMarka</p>
+                    </div>
+                    <div>
+                        <p class="product-price">
+                            Fiyat: <span class="text-decoration-line-through">@urun.ListeFiyat.ToString("c")</span><br>
+                            Avantaj Fiyat: <span>@urun.Fiyat.ToString("c")</span>
+                        </p>
+                        <a asp-action="UrunDetay"
+                        asp-route-urunId="@urun.Id"
+                        class="btn btn-primary bg-gradient border-0 form-control buy-button">Detaylar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
