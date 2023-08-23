@@ -2,8 +2,10 @@
 using Bitirme.DataAccess.Repository;
 using Bitirme.DataAccess.Repository.IRepository;
 using Bitirme.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BitirmeWeb.Areas.Users.Controllers
 {
@@ -28,9 +30,44 @@ namespace BitirmeWeb.Areas.Users.Controllers
 
         public IActionResult UrunDetay(int urunId)
         {
-            Urun urun = _unitOfWork.Urun.Get(u=>u.Id==urunId, includeProperties: "Kategori");
-            return View(urun);
+            AlisverisSepeti sepet = new AlisverisSepeti()
+            {
+                    Urun= _unitOfWork.Urun.Get(u => u.Id == urunId, includeProperties: "Kategori"),
+                    Miktar=1,
+                    UrunId=urunId
+                    
+            };
+            return View(sepet);
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult UrunDetay(AlisverisSepeti alisverisSepeti)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId=claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            alisverisSepeti.ApplicationUserId = userId;
+
+            AlisverisSepeti sepetFromDb = _unitOfWork.AlisverisSepeti.Get(u=>u.ApplicationUserId == userId &&
+            u.UrunId==alisverisSepeti.UrunId);
+
+            if (sepetFromDb != null)
+            {
+                sepetFromDb.Miktar += alisverisSepeti.Miktar;
+                _unitOfWork.AlisverisSepeti.Update(sepetFromDb);
+            }
+            else
+            {
+                _unitOfWork.AlisverisSepeti.Add(alisverisSepeti);
+            }
+            TempData["success"] = "Sepetiniz güncellendi";
+
+            _unitOfWork.AlisverisSepeti.Add(alisverisSepeti);
+            _unitOfWork.Save();
+            return View();
+
+        }
+
 
         //public IActionResult Privacy()
         //{

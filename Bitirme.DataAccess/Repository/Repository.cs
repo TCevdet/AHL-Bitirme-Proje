@@ -28,8 +28,10 @@ namespace Bitirme.DataAccess.Repository
             
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
+            if (tracked)
+            {
             IQueryable<T> query = dbSet;
             query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeProperties))
@@ -40,11 +42,28 @@ namespace Bitirme.DataAccess.Repository
                 }
             }
             return query.FirstOrDefault();
+            }
+            else
+            {
+                IQueryable<T> query = dbSet.AsNoTracking();
+                query = query.Where(filter);
+                if (!string.IsNullOrEmpty(includeProperties))
+                {
+                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProp);
+                    }
+                }
+                return query.FirstOrDefault();
+            }
         }
         //Kategori,Covertype
-        public IEnumerable<T> GetAll(string? includeProperties =null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties =null)
         {
             IQueryable<T> query = dbSet;
+            if (filter!=null){
+            query = query.Where(filter);
+            }
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach(var includeProp in includeProperties.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries)) 

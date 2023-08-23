@@ -1,12 +1,13 @@
-﻿@model Urun
+﻿@model AlisverisSepeti
     
 <form method="post">
+    <input hidden asp-for="UrunId" />
     <div class="card shadow border-0 mt-4 mb-4">
         <div class="card-header bg-secondary bg-gradient text-light py-4">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h3 class="text-white text-uppercase">@Model.UrunAdi</h3>
-                <p class="text-white-50 fw-semibold mb-0">@Model.UrunMarka</p>
+                    <h3 class="text-white text-uppercase">@Model.Urun.UrunAdi</h3>
+                    <p class="text-white-50 fw-semibold mb-0">@Model.Urun.UrunMarka</p>
                 </div>
             </div>
         </div>
@@ -21,21 +22,21 @@
                 </div>
                 <div class="row">
                     <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                    <img src="@Model.ResimUrl" width="100%" class="rounded" />
+                        <img src="@Model.Urun.ResimUrl" width="100%" class="rounded" />
                     </div>
                     <div class="col-12 col-lg-6 offset-lg-1">
 
                         <div class="col-12 col-md-6 pb-4">
-                        <span class="badge">@Model.Kategori</span>
+                            <span class="badge">@Model.Urun.Kategori</span>
                         </div>
                         <div class="row ps-2">
-                        <h6 class="text-dark text-opacity-50 ">Ürün Kodu: @Model.UrunKodu</h6>
+                            <h6 class="text-dark text-opacity-50 ">Ürün Kodu: @Model.Urun.UrunKodu</h6>
                         </div>
                         <div class="row ps-2">
                             <h6 class="text-dark text-opacity-50  pb-2">
                                 Fiyat:
                                 <span class="text-decoration-line-through">
-                                @Model.ListeFiyat.ToString("c")
+                                    @Model.Urun.ListeFiyat.ToString("c")
                                 </span>
                             </h6>
                         </div>
@@ -58,17 +59,17 @@
                                 <div>Fiyat</div>
                             </div>
                             <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                            <div>@Model.Fiyat.ToString("c")</div>
+                                <div>@Model.Urun.Fiyat.ToString("c")</div>
                             </div>
                             <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                            <div>@Model.Fiyat50.ToString("c")</div>
+                                <div>@Model.Urun.Fiyat50.ToString("c")</div>
                             </div>
                             <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                            <div>@Model.Fiyat100.ToString("c")</div>
+                                <div>@Model.Urun.Fiyat100.ToString("c")</div>
                             </div>
                         </div>
                         <div class="row pl-2 my-3">
-                        <p class="text-secondary lh-sm">@Html.Raw(Model.Aciklama)</p>
+                            <p class="text-secondary lh-sm">@Html.Raw(Model.Urun.Aciklama)</p>
                         </div>
                         <div class="row pl-2 mb-3">
                             <div class="col-md-4">
@@ -77,7 +78,7 @@
                                           id="inputGroup-sizing-default">
                                         Miktar
                                     </span>
-                                    <input type="number" value="1" class="form-control text-end"
+                                    <input asp-for="Miktar" type="number" value="1" class="form-control text-end"
                                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
 
                                 </div>
@@ -85,9 +86,9 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6 pb-1">
-                                <button type="submit" disabled
+                                <button type="submit"
                                         class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
-                                    Sepete Ekle (Çok yakında)
+                                    Sepete Ekle
                                 </button>
                             </div>
                         </div>

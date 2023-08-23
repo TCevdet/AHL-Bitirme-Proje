@@ -10,6 +10,8 @@ namespace Bitirme.DataAccess.Repository.IRepository
     {
         IKategoriRepository Kategori { get; }
         IUrunRepository Urun { get; }
+        IAlisverisSepetiRepository AlisverisSepeti { get; }
+        IApplicationUserRepository ApplicationUser { get; }
         void Save();
     }
     

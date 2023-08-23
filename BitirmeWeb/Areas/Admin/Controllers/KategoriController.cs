@@ -2,11 +2,14 @@
 using Bitirme.DataAccess.Data;
 using Bitirme.DataAccess.Repository.IRepository;
 using Bitirme.Models;
+using Bitirme.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BitirmeWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class KategoriController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
