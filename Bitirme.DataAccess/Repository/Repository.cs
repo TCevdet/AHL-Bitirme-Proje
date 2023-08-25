@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using Bitirme.DataAccess.Data;
 using Bitirme.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
@@ -30,38 +25,34 @@ namespace Bitirme.DataAccess.Repository
 
         public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
+            IQueryable<T> query;
             if (tracked)
             {
-            IQueryable<T> query = dbSet;
+                query = dbSet;
+            }
+            else {
+                query = dbSet.AsNoTracking();
+            
+            }
+
+            query = dbSet;
             query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeProperties))
             {
-                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var includeProp in includeProperties
+                        .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(includeProp);
                 }
             }
             return query.FirstOrDefault();
-            }
-            else
-            {
-                IQueryable<T> query = dbSet.AsNoTracking();
-                query = query.Where(filter);
-                if (!string.IsNullOrEmpty(includeProperties))
-                {
-                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        query = query.Include(includeProp);
-                    }
-                }
-                return query.FirstOrDefault();
-            }
+
         }
         //Kategori,Covertype
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties =null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter, string? includeProperties =null)
         {
             IQueryable<T> query = dbSet;
-            if (filter!=null){
+            if (filter!=null) {
             query = query.Where(filter);
             }
             if (!string.IsNullOrEmpty(includeProperties))

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bitirme.Models.ViewModels
 {
-    public class AlisverisSepetiVM
+    public class SiparisVM
     {
-        public IEnumerable<AlisverisSepeti> AlisverisSepetiListe { get; set; }
         public SiparisBaslik SiparisBaslik { get; set; }
+        public IEnumerable<SiparisDetay> SiparisDetay { get; set; }
     }
 }

@@ -16,14 +16,19 @@ namespace Bitirme.Models
         [ForeignKey("UrunId")]
         [ValidateNever]
         public Urun Urun { get; set; }
-        [Range(1,1000, ErrorMessage ="1 ve 1000 arası miktar giriniz")]
-        public int Miktar { get; set; }
-        public string ApplicationUserId { get; set;}
+        [Range(1,1000, ErrorMessage="1 ile 1000 arasında bir sayı giriniz")]
+        public int Adet { get; set; }
+        public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
 
-        [NotMapped]
-        public double Fiyat { get; set; }
+        [NotMapped] public double Fiyat { get; set;}
+
+
+
+
+
+
     }
 }

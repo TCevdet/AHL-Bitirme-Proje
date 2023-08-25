@@ -30,12 +30,12 @@ namespace Bitirme.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Adet")
+                        .HasColumnType("int");
+
                     b.Property<string>("ApplicationUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Miktar")
-                        .HasColumnType("int");
 
                     b.Property<int>("UrunId")
                         .HasColumnType("int");
@@ -47,6 +47,80 @@ namespace Bitirme.DataAccess.Migrations
                     b.HasIndex("UrunId");
 
                     b.ToTable("AlisverisSepetleri");
+                });
+
+            modelBuilder.Entity("Bitirme.Models.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adres")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ilce")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Isim")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostaKodu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sehir")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelefonNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adres = "Bahçelievler 2. Sokak",
+                            Ilce = "Merkez",
+                            Isim = "Cevdet Kuyumculuk",
+                            PostaKodu = "19000",
+                            Sehir = "Çorum",
+                            TelefonNo = "05355355353"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Adres = "Fatih Mah. 2. Sokak",
+                            Ilce = "Kızılay",
+                            Isim = "Tuğran Kuyum & Mücevher",
+                            PostaKodu = "06000",
+                            Sehir = "Ankara",
+                            TelefonNo = "05334567353"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Adres = "Çarşı Cad. 6. Sokak",
+                            Ilce = "Eminönü",
+                            Isim = "Altın Kuyumculuk",
+                            PostaKodu = "34000",
+                            Sehir = "İstanbul",
+                            TelefonNo = "05359992378"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Adres = "Alaattin Keykubat Cad Yeşil Sokak",
+                            Ilce = "Merkez",
+                            Isim = "Gümüşoğlu Kuyumculuk",
+                            PostaKodu = "41000",
+                            Sehir = "Konya",
+                            TelefonNo = "05359540099"
+                        });
                 });
 
             modelBuilder.Entity("Bitirme.Models.Kategori", b =>
@@ -94,6 +168,102 @@ namespace Bitirme.DataAccess.Migrations
                             Ad = "Diger",
                             Siparis = 4
                         });
+                });
+
+            modelBuilder.Entity("Bitirme.Models.SiparisBaslik", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adres")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("GonderimZamani")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Ilce")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Isim")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KargoFirmasi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KargoTakipNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OdemeDurumu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostaKodu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sehir")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SiparisDurumu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("SiparisToplamTutar")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("SiparisZamani")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TelefonNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("SiparisBasliks");
+                });
+
+            modelBuilder.Entity("Bitirme.Models.SiparisDetay", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Adet")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Fiyat")
+                        .HasColumnType("float");
+
+                    b.Property<int>("SiparisBaslikId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UrunId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SiparisBaslikId");
+
+                    b.HasIndex("UrunId");
+
+                    b.ToTable("SiparisDetays");
                 });
 
             modelBuilder.Entity("Bitirme.Models.Urun", b =>
@@ -443,6 +613,10 @@ namespace Bitirme.DataAccess.Migrations
                     b.Property<string>("Adres")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CompanyId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
                     b.Property<string>("Ilce")
                         .HasColumnType("nvarchar(max)");
 
@@ -455,6 +629,11 @@ namespace Bitirme.DataAccess.Migrations
 
                     b.Property<string>("Sehir")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelefonNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasIndex("CompanyId");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -474,6 +653,36 @@ namespace Bitirme.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Urun");
+                });
+
+            modelBuilder.Entity("Bitirme.Models.SiparisBaslik", b =>
+                {
+                    b.HasOne("Bitirme.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Bitirme.Models.SiparisDetay", b =>
+                {
+                    b.HasOne("Bitirme.Models.SiparisBaslik", "SiparisBaslik")
+                        .WithMany()
+                        .HasForeignKey("SiparisBaslikId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bitirme.Models.Urun", "Urun")
+                        .WithMany()
+                        .HasForeignKey("UrunId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SiparisBaslik");
 
                     b.Navigation("Urun");
                 });
@@ -538,6 +747,17 @@ namespace Bitirme.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Bitirme.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Bitirme.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
                 });
 #pragma warning restore 612, 618
         }

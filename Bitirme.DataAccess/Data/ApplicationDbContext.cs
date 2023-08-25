@@ -13,8 +13,11 @@ namespace Bitirme.DataAccess.Data
         }
         public DbSet<Kategori> Kategoriler { get; set; }
         public DbSet<Urun> Urunler { get; set; }
+        public DbSet<Company> Companies { get; set; }
         public DbSet<AlisverisSepeti> AlisverisSepetleri { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers{ get; set; }
+        public DbSet<SiparisBaslik> SiparisBasliks { get; set; }
+        public DbSet<SiparisDetay> SiparisDetays { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +28,13 @@ namespace Bitirme.DataAccess.Data
                 new Kategori { Id = 2, Ad = "KulceAltin", Siparis = 2 },
                 new Kategori { Id = 3, Ad = "ZiynetAltin", Siparis = 3 },
                 new Kategori { Id = 4, Ad = "Diger", Siparis = 4 });
+
+
+            modelBuilder.Entity<Company>().HasData(
+                new Company { Id = 1, Isim = "Cevdet Kuyumculuk", Adres = "Bahçelievler 2. Sokak", Sehir = "Çorum", Ilce = "Merkez", PostaKodu = "19000", TelefonNo = "05355355353" },
+                new Company { Id = 2, Isim = "Tuğran Kuyum & Mücevher", Adres = "Fatih Mah. 2. Sokak", Sehir = "Ankara", Ilce = "Kızılay", PostaKodu = "06000", TelefonNo = "05334567353" },
+                new Company { Id = 3, Isim = "Altın Kuyumculuk", Adres = "Çarşı Cad. 6. Sokak", Sehir = "İstanbul", Ilce = "Eminönü", PostaKodu = "34000", TelefonNo = "05359992378" },
+                new Company { Id = 4, Isim = "Gümüşoğlu Kuyumculuk", Adres = "Alaattin Keykubat Cad Yeşil Sokak", Sehir = "Konya", Ilce = "Merkez", PostaKodu = "41000", TelefonNo = "05359540099" });
 
 
             modelBuilder.Entity<Urun>().HasData(

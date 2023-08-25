@@ -10,7 +10,7 @@ namespace Bitirme.DataAccess.Repository.IRepository
     public interface IRepository<T> where T : class
     {
         //T - Kategori
-        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter=null, string? includeProperties = null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
         T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked=false);
         void Add(T entity);
         void Remove(T entity);

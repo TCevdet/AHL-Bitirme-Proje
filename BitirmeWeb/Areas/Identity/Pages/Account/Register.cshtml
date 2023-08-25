@@ -35,6 +35,11 @@
                         <label asp-for="Input.Isim" class="ms-2 text-muted">İsim</label>
                         <span asp-validation-for="Input.Isim" class="text-danger"></span>
                     </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.TelefonNo" class="form-control" placeholder="name@example.com" />
+                        <label asp-for="Input.TelefonNo" class="ms-2 text-muted">Telefon Numarası</label>
+                        <span asp-validation-for="Input.TelefonNo" class="text-danger"></span>
+                    </div>
                     
                     <div class="form-floating mb-3 col-md-6">
                         <input asp-for="Input.Adres" class="form-control" placeholder="name@example.com" />
@@ -60,6 +65,11 @@
                     <div class="form-floating mb-3 col-md-6">
                         <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
                             <option disabled selected>--Kullanıcı Tipi--</option>
+                        </select>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <select asp-for="Input.CompanyId" style="display:none;" asp-items="@Model.Input.CompanyList" class="form-select">
+                            <option disabled selected>--Firma Seç--</option>
                         </select>
                     </div>
                     <div class="col-12">
@@ -107,4 +117,17 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function(){
+            $('#Input_Role').change(function(){
+                var selection =$('#Input_Role Option:Selected').text();
+                if (selection=='Company'){
+                    $('#Input_CompanyId').show();
+                }
+                else{
+                    $('#Input_CompanyId').hide();
+                }
+            })
+        })
+    </script>
 }

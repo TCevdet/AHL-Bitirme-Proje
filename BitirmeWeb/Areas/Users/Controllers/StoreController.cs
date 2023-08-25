@@ -22,7 +22,7 @@ namespace BitirmeWeb.Areas.Users.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult StoreIndex()
+        public IActionResult Index()
         {
             IEnumerable<Urun> urunList = _unitOfWork.Urun.GetAll(includeProperties: "Kategori");
             return View(urunList);
@@ -33,7 +33,7 @@ namespace BitirmeWeb.Areas.Users.Controllers
             AlisverisSepeti sepet = new AlisverisSepeti()
             {
                     Urun= _unitOfWork.Urun.Get(u => u.Id == urunId, includeProperties: "Kategori"),
-                    Miktar=1,
+                    Adet=1,
                     UrunId=urunId
                     
             };
@@ -45,26 +45,27 @@ namespace BitirmeWeb.Areas.Users.Controllers
         public IActionResult UrunDetay(AlisverisSepeti alisverisSepeti)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId=claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             alisverisSepeti.ApplicationUserId = userId;
 
-            AlisverisSepeti sepetFromDb = _unitOfWork.AlisverisSepeti.Get(u=>u.ApplicationUserId == userId &&
+            AlisverisSepeti sepetFromDb = _unitOfWork.AlisverisSepeti.Get(u=>u.ApplicationUserId==userId && 
             u.UrunId==alisverisSepeti.UrunId);
-
             if (sepetFromDb != null)
             {
-                sepetFromDb.Miktar += alisverisSepeti.Miktar;
+                sepetFromDb.Adet += alisverisSepeti.Adet;
                 _unitOfWork.AlisverisSepeti.Update(sepetFromDb);
             }
             else
             {
                 _unitOfWork.AlisverisSepeti.Add(alisverisSepeti);
             }
-            TempData["success"] = "Sepetiniz güncellendi";
 
-            _unitOfWork.AlisverisSepeti.Add(alisverisSepeti);
+            TempData["success"] = "Sepet Başarıyla Güncellendi";
+
+            
             _unitOfWork.Save();
-            return View();
+
+            return RedirectToAction(nameof(Index));
 
         }
 

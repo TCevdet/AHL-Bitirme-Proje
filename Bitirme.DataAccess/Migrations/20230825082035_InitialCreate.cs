@@ -28,34 +28,21 @@ namespace Bitirme.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "Companies",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Isim = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Isim = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adres = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Sehir = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Ilce = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PostaKodu = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    TelefonNo = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.PrimaryKey("PK_Companies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,6 +76,73 @@ namespace Bitirme.DataAccess.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Isim = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sehir = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ilce = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostaKodu = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TelefonNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyId = table.Column<int>(type: "int", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Urunler",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UrunAdi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Aciklama = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UrunKodu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UrunMarka = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ListeFiyat = table.Column<double>(type: "float", nullable: false),
+                    Fiyat = table.Column<double>(type: "float", nullable: false),
+                    Fiyat50 = table.Column<double>(type: "float", nullable: false),
+                    Fiyat100 = table.Column<double>(type: "float", nullable: false),
+                    KategoriId = table.Column<int>(type: "int", nullable: false),
+                    ResimUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Urunler", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Urunler_Kategoriler_KategoriId",
+                        column: x => x.KategoriId,
+                        principalTable: "Kategoriler",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -179,31 +233,102 @@ namespace Bitirme.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Urunler",
+                name: "SiparisBasliks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UrunAdi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Aciklama = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UrunKodu = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UrunMarka = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ListeFiyat = table.Column<double>(type: "float", nullable: false),
-                    Fiyat = table.Column<double>(type: "float", nullable: false),
-                    Fiyat50 = table.Column<double>(type: "float", nullable: false),
-                    Fiyat100 = table.Column<double>(type: "float", nullable: false),
-                    KategoriId = table.Column<int>(type: "int", nullable: false),
-                    ResimUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SiparisZamani = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GonderimZamani = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SiparisToplamTutar = table.Column<double>(type: "float", nullable: false),
+                    SiparisDurumu = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OdemeDurumu = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    KargoTakipNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    KargoFirmasi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TelefonNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Sehir = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Ilce = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostaKodu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Isim = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Urunler", x => x.Id);
+                    table.PrimaryKey("PK_SiparisBasliks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Urunler_Kategoriler_KategoriId",
-                        column: x => x.KategoriId,
-                        principalTable: "Kategoriler",
+                        name: "FK_SiparisBasliks_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AlisverisSepetleri",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UrunId = table.Column<int>(type: "int", nullable: false),
+                    Adet = table.Column<int>(type: "int", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AlisverisSepetleri", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AlisverisSepetleri_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AlisverisSepetleri_Urunler_UrunId",
+                        column: x => x.UrunId,
+                        principalTable: "Urunler",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SiparisDetays",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SiparisBaslikId = table.Column<int>(type: "int", nullable: false),
+                    UrunId = table.Column<int>(type: "int", nullable: false),
+                    Adet = table.Column<int>(type: "int", nullable: false),
+                    Fiyat = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SiparisDetays", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SiparisDetays_SiparisBasliks_SiparisBaslikId",
+                        column: x => x.SiparisBaslikId,
+                        principalTable: "SiparisBasliks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SiparisDetays_Urunler_UrunId",
+                        column: x => x.UrunId,
+                        principalTable: "Urunler",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Companies",
+                columns: new[] { "Id", "Adres", "Ilce", "Isim", "PostaKodu", "Sehir", "TelefonNo" },
+                values: new object[,]
+                {
+                    { 1, "Bahçelievler 2. Sokak", "Merkez", "Cevdet Kuyumculuk", "19000", "Çorum", "05355355353" },
+                    { 2, "Fatih Mah. 2. Sokak", "Kızılay", "Tuğran Kuyum & Mücevher", "06000", "Ankara", "05334567353" },
+                    { 3, "Çarşı Cad. 6. Sokak", "Eminönü", "Altın Kuyumculuk", "34000", "İstanbul", "05359992378" },
+                    { 4, "Alaattin Keykubat Cad Yeşil Sokak", "Merkez", "Gümüşoğlu Kuyumculuk", "41000", "Konya", "05359540099" }
                 });
 
             migrationBuilder.InsertData(
@@ -227,8 +352,18 @@ namespace Bitirme.DataAccess.Migrations
                     { 3, "Rafineri onaylı ve belgeli, özel kutusunda gram altın  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sed feugiat arcu, sed facilisis ex. Aenean imperdiet molestie bibendum. Suspendisse bibendum orci id lacus efficitur, non mollis nisi laoreet. Ut et sollicitudin tellus, vitae eleifend urna. In elementum purus nec urna posuere, ut consequat nisl mattis. Vestibulum laoreet quis leo iaculis ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.\r\n\r\nCras ultricies ante ut diam rhoncus vestibulum. Integer a consequat quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam nec sapien vitae dui tristique facilisis et id mi. Proin venenatis malesuada ligula. Cras feugiat urna eu dolor eleifend feugiat. Nunc mollis erat at ipsum blandit pulvinar. ", 5000.0, 4750.0, 4990.0, 1, 5000.0, "/resimler/urunler/yarim.jpg", "Yarım Altın", "yrm01", "Ahlatcı Rafineri" },
                     { 4, "Rafineri onaylı ve belgeli, özel kutusunda 10 Gram Külçe Altın  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sed feugiat arcu, sed facilisis ex. Aenean imperdiet molestie bibendum. Suspendisse bibendum orci id lacus efficitur, non mollis nisi laoreet. Ut et sollicitudin tellus, vitae eleifend urna. In elementum purus nec urna posuere, ut consequat nisl mattis. Vestibulum laoreet quis leo iaculis ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.\r\n\r\nCras ultricies ante ut diam rhoncus vestibulum. Integer a consequat quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam nec sapien vitae dui tristique facilisis et id mi. Proin venenatis malesuada ligula. Cras feugiat urna eu dolor eleifend feugiat. Nunc mollis erat at ipsum blandit pulvinar.  ", 18000.0, 17500.0, 17800.0, 2, 18000.0, "/resimler/urunler/20gramkulce.png", "20 Gram Külçe Altın", "Kulce0001", "Ahlatcı Rafineri" },
                     { 5, "Rafineri onaylı ve belgeli, özel kutusunda 30 gram 18 Ayar şık kadın bilekliği  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sed feugiat arcu, sed facilisis ex. Aenean imperdiet molestie bibendum. Suspendisse bibendum orci id lacus efficitur, non mollis nisi laoreet. Ut et sollicitudin tellus, vitae eleifend urna. In elementum purus nec urna posuere, ut consequat nisl mattis. Vestibulum laoreet quis leo iaculis ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.\r\n\r\nCras ultricies ante ut diam rhoncus vestibulum. Integer a consequat quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam nec sapien vitae dui tristique facilisis et id mi. Proin venenatis malesuada ligula. Cras feugiat urna eu dolor eleifend feugiat. Nunc mollis erat at ipsum blandit pulvinar. ", 50000.0, 49700.0, 49800.0, 3, 50000.0, "/resimler/urunler/30gramhasirseritbilezik.jpg", "30 Gram Altın Bileklik", "Ziynet001", "Ahlatcı Rafineri" },
-                    { 6, "Rafineri onaylı ve belgeli, özel hediye kutusunda 50 gram 22 Ayar Burma Bilezik  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sed feugiat arcu, sed facilisis ex. Aenean imperdiet molestie bibendum. Suspendisse bibendum orci id lacus efficitur, non mollis nisi laoreet. Ut et sollicitudin tellus, vitae eleifend urna. In elementum purus nec urna posuere, ut consequat nisl mattis. Vestibulum laoreet quis leo iaculis ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.\r\n\r\nCras ultricies ante ut diam rhoncus vestibulum. Integer a consequat quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam nec sapien vitae dui tristique facilisis et id mi. Proin venenatis malesuada ligula. Cras feugiat urna eu dolor eleifend feugiat. Nunc mollis erat at ipsum blandit pulvinar. ", 85000.0, 84600.0, 84850.0, 3, 85000.0, "/resimler/urunler/50grambilezik.jpg", "50 Gram Burma Bilezik", "Ziynet002", "Ahlatcı Rafineri" }
+                    { 6, "Rafineri onaylı ve belgeli, özel hediye kutusunda 50 gram 22 Ayar Burma Bilezik  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sed feugiat arcu, sed facilisis ex. Aenean imperdiet molestie bibendum. Suspendisse bibendum orci id lacus efficitur, non mollis nisi laoreet. Ut et sollicitudin tellus, vitae eleifend urna. In elementum purus nec urna posuere, ut consequat nisl mattis. Vestibulum laoreet quis leo iaculis ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.\r\n\r\nCras ultricies ante ut diam rhoncus vestibulum. Integer a consequat quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam nec sapien vitae dui tristique facilisis et id mi. Proin venenatis malesuada ligula. Cras feugiat urna eu dolor eleifend feugiat. Nunc mollis erat at ipsum blandit pulvinar. ", 85000.0, 84600.0, 84850.0, 3, 85000.0, "/resimler/urunler/30grhasirseritbilezik.jpg", "50 Gram Burma Bilezik", "Ziynet002", "Ahlatcı Rafineri" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AlisverisSepetleri_ApplicationUserId",
+                table: "AlisverisSepetleri",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AlisverisSepetleri_UrunId",
+                table: "AlisverisSepetleri",
+                column: "UrunId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -263,11 +398,31 @@ namespace Bitirme.DataAccess.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_CompanyId",
+                table: "AspNetUsers",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SiparisBasliks_ApplicationUserId",
+                table: "SiparisBasliks",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SiparisDetays_SiparisBaslikId",
+                table: "SiparisDetays",
+                column: "SiparisBaslikId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SiparisDetays_UrunId",
+                table: "SiparisDetays",
+                column: "UrunId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Urunler_KategoriId",
@@ -278,6 +433,9 @@ namespace Bitirme.DataAccess.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AlisverisSepetleri");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -294,16 +452,25 @@ namespace Bitirme.DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Urunler");
+                name: "SiparisDetays");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "SiparisBasliks");
+
+            migrationBuilder.DropTable(
+                name: "Urunler");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Kategoriler");
+
+            migrationBuilder.DropTable(
+                name: "Companies");
         }
     }
 }
